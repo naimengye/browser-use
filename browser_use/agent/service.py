@@ -63,11 +63,18 @@ from browser_use.telemetry.views import (
 	AgentStepTelemetryEvent,
 )
 from browser_use.utils import check_env_variables, time_execution_async, time_execution_sync
+import base64
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 
 SKIP_LLM_API_KEY_VERIFICATION = os.environ.get('SKIP_LLM_API_KEY_VERIFICATION', 'false').lower()[0] in 'ty1'
+
+import sys
+from datetime import datetime
+
+# Generate timestamp for the log file
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 def log_response(response: AgentOutput) -> None:
@@ -127,7 +134,7 @@ class Agent(Generic[Context]):
 		override_system_message: str | None = None,
 		extend_system_message: str | None = None,
 		max_input_tokens: int = 128000,
-		validate_output: bool = False,
+		validate_output: bool = True,
 		message_context: str | None = None,
 		generate_gif: bool | str = False,
 		available_file_paths: list[str] | None = None,
@@ -446,6 +453,17 @@ class Agent(Generic[Context]):
 		try:
 			state = await self.browser_context.get_state(cache_clickable_elements_hashes=True)
 			current_page = await self.browser_context.get_current_page()
+
+
+			# Log screenshot if available
+			if state.screenshot is not None:
+				# Save screenshot to file
+				screenshot_dir = Path(f'agent_screenshots_{timestamp}')
+				screenshot_dir.mkdir(exist_ok=True)
+				screenshot_path = screenshot_dir / f"step_{self.state.n_steps:03d}.png"
+				with open(screenshot_path, "wb") as f:
+					f.write(base64.b64decode(state.screenshot))
+				logger.info(f"💾 Screenshot capturing current state of browser saved to: {screenshot_path}")
 
 			# generate procedural memory if needed
 			if self.enable_memory and self.memory and self.state.n_steps % self.memory.config.memory_interval == 0:
@@ -800,6 +818,26 @@ class Agent(Generic[Context]):
 			)
 		)
 
+	def _save_logger_output(self) -> None:
+		"""Save the logger output to a file"""
+		# Create logs directory if it doesn't exist
+		log_dir = Path('agent_logs')
+		log_dir.mkdir(exist_ok=True)
+		
+		log_file = log_dir / f"agent_run_{timestamp}.log"
+		
+		# Get the current logger handler
+		handler = logging.FileHandler(log_file)
+		handler.setLevel(logging.INFO)
+		
+		# Add the file handler to the logger
+		logger.addHandler(handler)
+		
+		# Log a separator to mark the start of this run
+		logger.info("=" * 80)
+		logger.info(f"Agent Run Log - {timestamp}")
+		logger.info("=" * 80)
+
 	async def take_step(self) -> tuple[bool, bool]:
 		"""Take a step
 
@@ -846,6 +884,7 @@ class Agent(Generic[Context]):
 
 		try:
 			self._log_agent_run()
+			self._save_logger_output()
 
 			# Execute initial actions if provided
 			if self.initial_actions:

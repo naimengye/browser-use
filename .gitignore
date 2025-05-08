@@ -22,6 +22,9 @@ dist/
 *.csv
 *.json
 *.jsonl
+*.log
+*.png
+*.jpg
 
 # Secrets and sensitive files
 secrets.env
