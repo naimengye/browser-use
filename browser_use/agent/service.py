@@ -183,7 +183,7 @@ class Agent(Generic[Context]):
 		log_file = log_dir / f"agent_run_{self.task_name}.log"
 		
 		# Get the current logger handler
-		handler = logging.FileHandler(log_file)
+		handler = logging.FileHandler(log_file, mode='w')  # Use 'w' mode to overwrite existing file
 		handler.setLevel(logging.INFO)
 		
 		# Add the file handler to the logger
@@ -479,8 +479,8 @@ class Agent(Generic[Context]):
 			# Log screenshot if available
 			if state.screenshot is not None:
 				# Save screenshot to file
-				screenshot_dir = Path(f'agent_screenshots_{self.task_name}')
-				screenshot_dir.mkdir(exist_ok=True)
+				screenshot_dir = Path('agent_screenshots') / f'agent_screenshots_{self.task_name}'
+				screenshot_dir.mkdir(parents=True, exist_ok=True)
 				screenshot_path = screenshot_dir / f"step_{self.state.n_steps:03d}.png"
 				with open(screenshot_path, "wb") as f:
 					f.write(base64.b64decode(state.screenshot))

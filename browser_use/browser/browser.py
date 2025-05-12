@@ -284,43 +284,57 @@ class Browser:
 			screen_size = get_screen_resolution()
 			offset_x, offset_y = get_window_adjustments()
 
-		chrome_args = {
-			f'--remote-debugging-port={self.config.chrome_remote_debugging_port}',
-			*CHROME_ARGS,
-			*(CHROME_DOCKER_ARGS if IN_DOCKER else []),
-			*(CHROME_HEADLESS_ARGS if self.config.headless else []),
-			*(CHROME_DISABLE_SECURITY_ARGS if self.config.disable_security else []),
-			*(CHROME_DETERMINISTIC_RENDERING_ARGS if self.config.deterministic_rendering else []),
-			f'--window-position={offset_x},{offset_y}',
-			f'--window-size={screen_size["width"]},{screen_size["height"]}',
-			*self.config.extra_browser_args,
-		}
+		# Prepare browser-specific arguments
+		if self.config.browser_class == 'chromium':
+			chrome_args = {
+				f'--remote-debugging-port={self.config.chrome_remote_debugging_port}',
+				*CHROME_ARGS,
+				*(CHROME_DOCKER_ARGS if IN_DOCKER else []),
+				*(CHROME_HEADLESS_ARGS if self.config.headless else []),
+				*(CHROME_DISABLE_SECURITY_ARGS if self.config.disable_security else []),
+				*(CHROME_DETERMINISTIC_RENDERING_ARGS if self.config.deterministic_rendering else []),
+				f'--window-position={offset_x},{offset_y}',
+				f'--window-size={screen_size["width"]},{screen_size["height"]}',
+				*self.config.extra_browser_args,
+			}
 
-		# check if chrome remote debugging port is already taken,
-		# if so remove the remote-debugging-port arg to prevent conflicts
-		with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-			if s.connect_ex(('localhost', self.config.chrome_remote_debugging_port)) == 0:
-				chrome_args.remove(f'--remote-debugging-port={self.config.chrome_remote_debugging_port}')
+			# check if chrome remote debugging port is already taken,
+			# if so remove the remote-debugging-port arg to prevent conflicts
+			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+				if s.connect_ex(('localhost', self.config.chrome_remote_debugging_port)) == 0:
+					chrome_args.remove(f'--remote-debugging-port={self.config.chrome_remote_debugging_port}')
+		elif self.config.browser_class == 'firefox':
+			# Firefox-specific arguments
+			firefox_args = {
+				'-no-remote',  # Allow multiple Firefox instances
+				'-width', str(screen_size['width']),
+				'-height', str(screen_size['height']),
+				'-new-instance',  # Start a new instance
+				*self.config.extra_browser_args,
+			}
+			if self.config.headless:
+				firefox_args.add('-headless')
+			if self.config.disable_security:
+				firefox_args.update({
+					'-pref', 'security.default_personal_cert=Select Automatically',
+					'-pref', 'security.enterprise_roots.enabled=true',
+					'-pref', 'security.enterprise_roots.auto-enabled=true',
+				})
+		else:  # webkit
+			webkit_args = {
+				'--no-startup-window',
+				*self.config.extra_browser_args,
+			}
 
 		browser_class = getattr(playwright, self.config.browser_class)
 		args = {
-			'chromium': list(chrome_args),
-			'firefox': [
-				*{
-					'-no-remote',
-					*self.config.extra_browser_args,
-				}
-			],
-			'webkit': [
-				*{
-					'--no-startup-window',
-					*self.config.extra_browser_args,
-				}
-			],
+			'chromium': list(chrome_args) if self.config.browser_class == 'chromium' else [],
+			'firefox': list(firefox_args) if self.config.browser_class == 'firefox' else [],
+			'webkit': list(webkit_args) if self.config.browser_class == 'webkit' else [],
 		}
 
 		browser = await browser_class.launch(
-			channel='chromium',  # https://github.com/microsoft/playwright/issues/33566
+			channel='chromium' if self.config.browser_class == 'chromium' else None,  # https://github.com/microsoft/playwright/issues/33566
 			headless=self.config.headless,
 			args=args[self.config.browser_class],
 			proxy=self.config.proxy.model_dump() if self.config.proxy else None,
