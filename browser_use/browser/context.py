@@ -70,7 +70,7 @@ class BrowserContextConfig(BaseModel):
 			Time to wait for network requests to finish before getting page state.
 			Lower values may result in incomplete page loads.
 
-	    maximum_wait_page_load_time: 5.0
+	    maximum_wait_page_load_time: 10.0
 	        Maximum time to wait for page load before proceeding anyway
 
 	    wait_between_actions: 1.0
@@ -147,7 +147,7 @@ class BrowserContextConfig(BaseModel):
 	cookies_file: str | None = None
 	minimum_wait_page_load_time: float = 0.25
 	wait_for_network_idle_page_load_time: float = 0.5
-	maximum_wait_page_load_time: float = 5
+	maximum_wait_page_load_time: float = 10
 	wait_between_actions: float = 0.5
 
 	disable_security: bool = False  # disable_security=True is dangerous as any malicious URL visited could embed an iframe for the user's bank, and use their cookies to steal money
@@ -309,6 +309,8 @@ class BrowserContext:
 		# auto-attach the foregrounding-detection listener to all new pages opened
 		context.on('page', self._add_tab_foregrounding_listener)
 
+		context.on('page', self._setup_console_logging)
+
 		# Get or create a page to use
 		pages = context.pages
 
@@ -370,6 +372,7 @@ class BrowserContext:
 		for page in pages:
 			if not page.url.startswith('chrome-extension://') and not page.url.startswith('chrome://') and not page.is_closed():
 				await self._add_tab_foregrounding_listener(page)
+				await self._setup_console_logging(page)
 				# logger.debug(f'👁️  Added visibility listener to existing tab: {page.url}')
 
 		return self.session
@@ -970,6 +973,49 @@ class BrowserContext:
 			except Exception as e:
 				logger.error(f'⛔️  Failed to go back after detecting non-allowed URL: {str(e)}')
 			raise URLNotAllowedError(f'Navigation to non-allowed URL: {page.url}')
+		
+
+	async def _setup_console_logging(self, page: Page):
+		"""Setup console message and error capturing for a page"""
+		logger = logging.getLogger(__name__)
+		
+		def handle_console(msg):
+			"""Handle browser console messages"""
+			level_map = {
+				'error': logging.ERROR,
+				'warning': logging.WARNING,
+				'warn': logging.WARNING,
+				'info': logging.INFO,
+				'debug': logging.DEBUG,
+				'log': logging.INFO
+			}
+			
+			level = level_map.get(msg.type, logging.INFO)
+			url = page.url if hasattr(page, 'url') else 'unknown'
+			
+			# Format message with context
+			message = f"BROWSER CONSOLE [{msg.type.upper()}] on {url}: {msg.text}"
+			
+			logger.log(level, message)
+		
+		def handle_page_error(error):
+			"""Handle browser page errors (uncaught exceptions)"""
+			url = page.url if hasattr(page, 'url') else 'unknown'
+			logger.error(f"BROWSER PAGE ERROR on {url}: {str(error)}")
+		
+		def handle_request_failed(request):
+			"""Handle failed network requests"""
+			logger.warning(f"BROWSER REQUEST FAILED: {request.url} - {request.failure}")
+		
+		# Attach all listeners
+		try:
+			page.on('console', handle_console)
+			page.on('pageerror', handle_page_error)
+			page.on('requestfailed', handle_request_failed)
+			
+			logger.debug(f'🔍 Added console logging listeners to page: {page.url}')
+		except Exception as e:
+			logger.debug(f'Failed to add console logging to {page.url}: {e}')
 
 	async def navigate_to(self, url: str):
 		"""Navigate the agent's current tab to a URL"""
@@ -1756,6 +1802,8 @@ class BrowserContext:
 
 		session = await self.get_session()
 		new_page = await session.context.new_page()
+
+		await self._setup_console_logging(new_page)
 
 		# Update both tab references - agent wants this tab, and it's now in the foreground
 		self.agent_current_page = new_page

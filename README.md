@@ -1,65 +1,34 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./static/browser-use-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="./static/browser-use.png">
-  <img alt="Shows a black Browser Use Logo in light color mode and a white one in dark color mode." src="./static/browser-use.png"  width="full">
-</picture>
+# Browser Use - Enhanced Logging and Bug Report Generation
 
-<h1 align="center">Enable AI to control your browser 🤖</h1>
+This repository is a fork of [browser-use](https://github.com/gregpr07/browser-use) with enhanced logging capabilities and automated bug report generation. It allows AI agents to control web browsers to complete given task while providing detailed logging and analysis of agent behavior.
 
-[![GitHub stars](https://img.shields.io/github/stars/gregpr07/browser-use?style=social)](https://github.com/gregpr07/browser-use/stargazers)
-[![Discord](https://img.shields.io/discord/1303749220842340412?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://link.browser-use.com/discord)
-[![Cloud](https://img.shields.io/badge/Cloud-☁️-blue)](https://cloud.browser-use.com)
-[![Documentation](https://img.shields.io/badge/Documentation-📕-blue)](https://docs.browser-use.com)
-[![Twitter Follow](https://img.shields.io/twitter/follow/Gregor?style=social)](https://x.com/gregpr07)
-[![Twitter Follow](https://img.shields.io/twitter/follow/Magnus?style=social)](https://x.com/mamagnus00)
-[![Weave Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fapp.workweave.ai%2Fapi%2Frepository%2Fbadge%2Forg_T5Pvn3UBswTHIsN1dWS3voPg%2F881458615&labelColor=#EC6341)](https://app.workweave.ai/reports/repository/org_T5Pvn3UBswTHIsN1dWS3voPg/881458615)
+## Features
 
-🌐 Browser-use is the easiest way to connect your AI agents with the browser.
+- Enhanced logging of agent actions and browser interactions
+- Automated bug report generation
+- Screenshot capture of agent actions
+- Task execution from a task list file
+- Support for multiple LLM providers (Anthropic, OpenAI, etc.)
 
-💡 See what others are building and share your projects in our [Discord](https://link.browser-use.com/discord)! Want Swag? Check out our [Merch store](https://browsermerch.com).
+## Installation
 
-🌤️ Skip the setup - try our <b>hosted version</b> for instant browser automation! <b>[Try the cloud ☁︎](https://cloud.browser-use.com)</b>.
-
-# Quick start
-
-With pip (Python>=3.11):
-
+1. Clone this repository:
 ```bash
-pip install browser-use
+git clone https://github.com/yourusername/browser-use.git
+cd browser-use
 ```
 
-For memory functionality (requires Python<3.13 due to PyTorch compatibility):  
-
+2. Install dependencies:
 ```bash
-pip install "browser-use[memory]"
+pip install -r requirements.txt
 ```
 
-Install Patchright:
+3. Install Patchright (required for browser automation):
 ```bash
 patchright install chromium --with-deps --no-shell
 ```
 
-Spin up your agent:
-
-```python
-from langchain_openai import ChatOpenAI
-from browser_use import Agent
-import asyncio
-from dotenv import load_dotenv
-load_dotenv()
-
-async def main():
-    agent = Agent(
-        task="Compare the price of gpt-4o and DeepSeek-V3",
-        llm=ChatOpenAI(model="gpt-4o"),
-    )
-    await agent.run()
-
-asyncio.run(main())
-```
-
-Add your API keys for the provider you want to use to your `.env` file.
-
+4. Create a `.env` file with your API keys:
 ```bash
 OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
@@ -71,129 +40,45 @@ GROK_API_KEY=
 NOVITA_API_KEY=
 ```
 
-For other settings, models, and more, check out the [documentation 📕](https://docs.browser-use.com).
+## Usage
 
-### Test with UI
+1. Create a `tasks.txt` file with your tasks in the format:
+```
+task_name: task description
+```
 
-You can test browser-use using its [Web UI](https://github.com/browser-use/web-ui) or [Desktop App](https://github.com/browser-use/desktop).
-
-### Test with an interactive CLI
-
-You can also use our interactive CLI (similar to `claude` code):
-
+2. Run the main script:
 ```bash
-$ browser-use
+python main.py
 ```
 
-# Demos
-
-<br/><br/>
-
-[Task](https://github.com/browser-use/browser-use/blob/main/examples/use-cases/shopping.py): Add grocery items to cart, and checkout.
-
-[![AI Did My Groceries](https://github.com/user-attachments/assets/d9359085-bde6-41d4-aa4e-6520d0221872)](https://www.youtube.com/watch?v=L2Ya9PYNns8)
-
-<br/><br/>
-
-Prompt: Add my latest LinkedIn follower to my leads in Salesforce.
-
-![LinkedIn to Salesforce](https://github.com/user-attachments/assets/1440affc-a552-442e-b702-d0d3b277b0ae)
-
-<br/><br/>
-
-[Prompt](https://github.com/browser-use/browser-use/blob/main/examples/use-cases/find_and_apply_to_jobs.py): Read my CV & find ML jobs, save them to a file, and then start applying for them in new tabs, if you need help, ask me.'
-
-https://github.com/user-attachments/assets/171fb4d6-0355-46f2-863e-edb04a828d04
-
-<br/><br/>
-
-[Prompt](https://github.com/browser-use/browser-use/blob/main/examples/browser/real_browser.py): Write a letter in Google Docs to my Papa, thanking him for everything, and save the document as a PDF.
-
-![Letter to Papa](https://github.com/user-attachments/assets/242ade3e-15bc-41c2-988f-cbc5415a66aa)
-
-<br/><br/>
-
-[Prompt](https://github.com/browser-use/browser-use/blob/main/examples/custom-functions/save_to_file_hugging_face.py): Look up models with a license of cc-by-sa-4.0 and sort by most likes on Hugging face, save top 5 to file.
-
-https://github.com/user-attachments/assets/de73ee39-432c-4b97-b4e8-939fd7f323b3
-
-<br/><br/>
-
-## More examples
-
-For more examples see the [examples](examples) folder or join the [Discord](https://link.browser-use.com/discord) and show off your project. You can also see our [`awesome-prompts`](https://github.com/browser-use/awesome-prompts) repo for prompting inspiration.
-
-# Vision
-
-Tell your computer what to do, and it gets it done.
-
-## Roadmap
-
-### Agent
-
-- [ ] Improve agent memory to handle +100 steps
-- [ ] Enhance planning capabilities (load website specific context)
-- [ ] Reduce token consumption (system prompt, DOM state)
-
-### DOM Extraction
-
-- [ ] Enable detection for all possible UI elements
-- [ ] Improve state representation for UI elements so that all LLMs can understand what's on the page
-
-### Workflows
-
-- [ ] Let user record a workflow - which we can rerun with browser-use as a fallback
-- [ ] Make rerunning of workflows work, even if pages change
-
-### User Experience
-
-- [ ] Create various templates for tutorial execution, job application, QA testing, social media, etc. which users can just copy & paste.
-- [ ] Improve docs
-- [ ] Make it faster
-
-### Parallelization
-
-- [ ] Human work is sequential. The real power of a browser agent comes into reality if we can parallelize similar tasks. For example, if you want to find contact information for 100 companies, this can all be done in parallel and reported back to a main agent, which processes the results and kicks off parallel subtasks again.
+The script will:
+- Read tasks from `tasks.txt`
+- Execute each task using an AI agent
+- Generate detailed logs in the `agent_logs` directory
+- Capture screenshots in the `agent_screenshots` directory
 
 
-## Contributing
-
-We love contributions! Feel free to open issues for bugs or feature requests. To contribute to the docs, check out the `/docs` folder.
-
-## Local Setup
-
-To learn more about the library, check out the [local setup 📕](https://docs.browser-use.com/development/local-setup).
-
-
-`main` is the primary development branch with frequent changes. For production use, install a stable [versioned release](https://github.com/browser-use/browser-use/releases) instead.
-
----
-
-## Swag
-
-Want to show off your Browser-use swag? Check out our [Merch store](https://browsermerch.com). Good contributors will receive swag for free 👀.
-
-## Citation
-
-If you use Browser Use in your research or project, please cite:
-
-```bibtex
-@software{browser_use2024,
-  author = {Müller, Magnus and Žunič, Gregor},
-  title = {Browser Use: Enable AI to control your browser},
-  year = {2024},
-  publisher = {GitHub},
-  url = {https://github.com/browser-use/browser-use}
-}
+3. Run the bug report generation pipeline:
+```bash
+python generate_bug_report.py
 ```
+This generates bug reports in the `bug_reports` directory
 
- <div align="center"> <img src="https://github.com/user-attachments/assets/06fa3078-8461-4560-b434-445510c1766f" width="400"/> 
- 
-[![Twitter Follow](https://img.shields.io/twitter/follow/Gregor?style=social)](https://x.com/gregpr07)
-[![Twitter Follow](https://img.shields.io/twitter/follow/Magnus?style=social)](https://x.com/mamagnus00)
- 
- </div>
+## Project Structure
 
-<div align="center">
-Made with ❤️ in Zurich and San Francisco
- </div>
+- `main.py` - Main entry point for running tasks
+- `generate_bug_report.py` - Script for generating bug reports
+- `analyze_agent_run.py` - Script for analyzing agent runs
+- `agent_logs/` - Directory containing detailed agent logs
+- `agent_screenshots/` - Directory containing screenshots of agent actions
+- `bug_reports/` - Directory containing generated bug reports
+- `tasks.txt` - File containing tasks to be executed
+
+## License
+
+This project is licensed under the same license as the original browser-use repository.
+
+## Acknowledgments
+
+This project is based on the original [browser-use](https://github.com/gregpr07/browser-use) repository by Gregor Žunič and Magnus Müller.

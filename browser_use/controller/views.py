@@ -87,5 +87,5 @@ class DragDropAction(BaseModel):
 	coord_target_y: int | None = Field(None, description='Absolute Y coordinate on page to drop at (in pixels)')
 
 	# Common options
-	steps: int | None = Field(10, description='Number of intermediate points for smoother movement (5-20 recommended)')
+	steps: int | None = Field(20, description='Number of intermediate points for smoother movement (5-20 recommended)')
 	delay_ms: int | None = Field(5, description='Delay in milliseconds between steps (0 for fastest, 10-20 for more natural)')
