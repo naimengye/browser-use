@@ -14,7 +14,7 @@ This repository is a fork of [browser-use](https://github.com/gregpr07/browser-u
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/browser-use.git
+git clone https://github.com/naimengye/browser-use.git
 cd browser-use
 ```
 
