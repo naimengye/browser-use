@@ -1225,7 +1225,6 @@ class BrowserContext:
 				viewport_expansion=self.config.viewport_expansion,
 				highlight_elements=self.config.highlight_elements,
 			)
-
 			tabs_info = await self.get_tabs_info()
 
 			# Get all cross-origin iframes within the page and open them in new tabs
@@ -1247,10 +1246,8 @@ class BrowserContext:
 			# 			parent_page_id=self.state.target_id,
 			# 		)
 			# 	)
-
 			screenshot_b64 = await self.take_screenshot()
 			pixels_above, pixels_below = await self.get_scroll_info(page)
-
 			# Find the agent's active tab ID
 			agent_current_page_id = 0
 			if self.agent_current_page:
@@ -1285,10 +1282,9 @@ class BrowserContext:
 		Returns a base64 encoded screenshot of the current page.
 		"""
 		page = await self.get_agent_current_page()
-
 		# We no longer force tabs to the foreground as it disrupts user focus
 		# await page.bring_to_front()
-		await page.wait_for_load_state()
+		await page.wait_for_load_state("load", timeout=2000)
 
 		screenshot = await page.screenshot(
 			full_page=full_page,

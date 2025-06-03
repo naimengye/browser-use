@@ -89,6 +89,9 @@ class BrowserConfig(BaseModel):
 
 		deterministic_rendering: False
 			Enable deterministic rendering (makes GPU/font rendering consistent across different OS's and docker)
+
+		auth_manager: None
+			Auth manager to use to handle authentication for the browser
 	"""
 
 	model_config = ConfigDict(
@@ -117,6 +120,10 @@ class BrowserConfig(BaseModel):
 
 	proxy: ProxySettings | None = None
 	new_context_config: BrowserContextConfig = Field(default_factory=BrowserContextConfig)
+
+	use_test_profile: bool = False
+	test_profile_name: str = "test_profile"
+	auth_domains: list[str] = Field(default_factory=list)  # Domains that require auth
 
 
 # @singleton: TODO - think about id singleton makes sense here

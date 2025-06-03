@@ -47,16 +47,26 @@ NOVITA_API_KEY=
 task_name: task description
 ```
 
+2. Run one time the setup environment script
+```bash
+python setup_test_env.py
+```
+
+This script will:
+- Prompt you to input the login credentials that gets programmatically processed once, and then save the cookies for future launches
+
 2. Run the main script:
 ```bash
 python main.py
 ```
 
 The script will:
+- Either programmatically login to (currently set) google when there is no cookie available, or read from past browser cookies and launch a browser that is already logged in.
 - Read tasks from `tasks.txt`
 - Execute each task using an AI agent
 - Generate detailed logs in the `agent_logs` directory
 - Capture screenshots in the `agent_screenshots` directory
+- Note that currently the script is written such that the white listed domains are limited to a few big websites. Should change this later.
 
 
 3. Run the bug report generation pipeline:

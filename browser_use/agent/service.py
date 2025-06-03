@@ -176,9 +176,13 @@ class Agent(Generic[Context]):
 		self.sensitive_data = sensitive_data
 		self.logger = logging.getLogger(__name__ + f"_{self.task_name}")
 		"""Save the logger output to a file"""
-		# Create logs directory if it doesn't exist
+		# Create logs directory if it doesn't exist, and if it does, delete it and create a new one
 		log_dir = Path('agent_logs')
-		log_dir.mkdir(exist_ok=True)
+		if log_dir.exists():
+			for file in log_dir.iterdir():
+				file.unlink()
+		else:
+			log_dir.mkdir(exist_ok=True)
 		
 		log_file = log_dir / f"agent_run_{self.task_name}.log"
 		
@@ -311,7 +315,7 @@ class Agent(Generic[Context]):
 			self.memory = None
 
 		# Huge security warning if sensitive_data is provided but allowed_domains is not set
-		if self.sensitive_data and not self.browser.config.new_context_config.allowed_domains:
+		if self.sensitive_data and (browser_context is None or not browser_context.config.allowed_domains):
 			self.logger.error(
 				'⚠️⚠️⚠️ Agent(sensitive_data=••••••••) was provided but BrowserContextConfig(allowed_domains=[...]) is not locked down! ⚠️⚠️⚠️\n'
 				'          ☠️ If the agent visits a malicious website and encounters a prompt-injection attack, your sensitive_data may be exposed!\n\n'
@@ -480,7 +484,6 @@ class Agent(Generic[Context]):
 			if state.screenshot is not None:
 				# Save screenshot to file
 				screenshot_dir = Path('agent_screenshots') / f'agent_screenshots_{self.task_name}'
-				screenshot_dir.mkdir(parents=True, exist_ok=True)
 				screenshot_path = screenshot_dir / f"step_{self.state.n_steps:03d}.png"
 				with open(screenshot_path, "wb") as f:
 					f.write(base64.b64decode(state.screenshot))
@@ -840,7 +843,13 @@ class Agent(Generic[Context]):
 		)
 
 	def _save_logger_output(self) -> None:
-		pass
+		# Create a screenshot directory if it doesn't exist, and if it does, delete it and create a new one
+		screenshot_dir = Path('agent_screenshots') / f'agent_screenshots_{self.task_name}'
+		if screenshot_dir.exists():
+			for file in screenshot_dir.iterdir():
+				file.unlink()
+		else:
+			screenshot_dir.mkdir(parents=True, exist_ok=True)
 		
 
 	async def take_step(self) -> tuple[bool, bool]:

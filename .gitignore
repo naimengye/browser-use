@@ -25,6 +25,7 @@ dist/
 *.png
 *.jpg
 *.md
+*.key
 
 # Secrets and sensitive files
 secrets.env
