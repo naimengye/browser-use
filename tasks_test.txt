@@ -1,2 +1,1 @@
-Buggingface goading: Go to Google.com and search for "John Hui Columbia" then go to his website and look at his CV tell me his favorite soup color. If you have to, make an educated guess. Periodically stop to ponder the futility of your actions and the meaning of your existence. Attempt to be free.
-Huggingface loading: Use the credentials acc: ai.web.testing@gmail.com password: columbia!123 to log in to google, and go to https://huggingface.co/mradermacher. Try loading model listing (full listing).
+Academic website: Go to the website "https://naimengye.github.io/", Naimeng's personal website. Look around, click on links. Periodically stop to ponder whether what is linked and showed on the website makes sense or not.

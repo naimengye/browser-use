@@ -1,9 +1,14 @@
-Huggingface loading: Use the credentials acc: ai.web.testing@gmail.com password: Columbia!123 and go to https://huggingface.co/mradermacher. Try loading model listing.
-PinInterest: Go to https://www.pinterest.com/aiwebtesting/test2/. Add a pin via "more ideas". Try doing this multiple times. If needed, choose to continue with google using the account [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com) and password columbia!123.
-Gmail: use credentials acc: [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com) password: columbia!123 for gmail and acc: [ai.web.testing@outlook.com](mailto:ai.web.testing@outlook.com) password: columbia!123 for outlook. Try searching an image by attachment.
-Chrome: Go on google with credentials acc: [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com), password: columbia!123. Try typing arabic numerals in search bars and google doc.
+PinInterest: Go to https://www.pinterest.com/aiwebtesting/test2/. Add a pin via "more ideas". Try doing this multiple times. If needed, choose to continue with google using the account [ai.web.testing@gmail.com] and password columbia!123.
+
+Chrome: Go on google, try typing arabic numerals in search bars and google doc.
+
+reddit user: use the google account as reddit login (continue with google). Go on https://www.reddit.com/login/?dest=https://www.reddit.com/user/Savings_Marzipan3137/submit/?type%3DTEXT and try creating a post. Choose the user yourself when selecting a community. Try if that triggers any errors.
+
 Google maps: Go on google maps and look for a route from Ferguson Plumbing Supply, 57-22 49th St, Maspeth, NY 11378 to Big Geyser Inc, 57-65 48th St, Maspeth, NY 11378. Examine the resulting route that google maps provide, and tell me if the routing makes sense to you.
-Google sheet: Go on google sheet. Use this loggin if needed: acc: [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com), password: columbia!123. Access this URL https://docs.google.com/spreadsheets/d/17s_Kkd84BFz4vn3WRPX4PnJ_4Om2ExJLpyBTjPDNA08/edit?gid=0#gid=0 and try copying an error message, with "right-click+ctrl+c" and "right-click+select copy which also shows as ctrl+c" see if it works.
-Huggingface loading: Use the credentials acc: [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com)
-password: Columbia!123 and go to https://huggingface.co/mradermacher. Try loading model listing.
-reddit user: use the google account [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com) password: columbia!123 as reddit login (continue with google). Go on https://www.reddit.com/login/?dest=https://www.reddit.com/user/Savings_Marzipan3137/submit/?type%3DTEXT and try creating a post. Choose the user yourself when selecting a community. Try if that triggers any errors.
+
+Google sheet: Go on google sheet. Access this URL https://docs.google.com/spreadsheets/d/17s_Kkd84BFz4vn3WRPX4PnJ_4Om2ExJLpyBTjPDNA08/edit?gid=0#gid=0 and try copying an error message, with "right-click+ctrl+c" and "right-click+select copy which also shows as ctrl+c" see if it works.
+Huggingface loading: Ggo to https://huggingface.co/mradermacher. Try loading model listing.
+
+
+
+Gmail: use credentials acc: [ai.web.testing@gmail.com](mailto:ai.web.testing@gmail.com) password: columbia!123 for gmail and acc: [ai.web.testing@outlook.com](mailto:ai.web.testing@outlook.com) password: columbia!123 for outlook. Try searching an image by attachment.

@@ -43,7 +43,7 @@ async def setup_authenticated_browser():
         user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         permissions=["clipboard-read", "clipboard-write"],
         # Important: set allowed domains for sensitive operations
-        allowed_domains=["amazon.com", "google.com", "github.com", "huggingface.co", "outlook.com"],
+        #allowed_domains=["amazon.com", "google.com", "github.com", "huggingface.co", "outlook.com"],
     )
 
     browser = Browser(config=browser_config)
@@ -76,7 +76,7 @@ async def main():
     browser, browser_context = await setup_authenticated_browser()
     print("Browser and context initialized, ready to run tasks")
     # Read tasks
-    with open("tasks.txt", "r") as f:
+    with open("tasks_test.txt", "r") as f:
         for line in f:
             if line.strip() == "":
                 continue
@@ -89,10 +89,7 @@ async def main():
                 llm=ChatAnthropic(model="claude-3-7-sonnet-20250219"),
                 task_name=name,
                 browser=browser,
-                browser_context=browser_context,
-                sensitive_data={
-                     "test_email": "test@example.com"  # Use test data only
-                }
+                browser_context=browser_context
             )
             
             try:

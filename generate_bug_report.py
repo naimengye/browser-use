@@ -24,13 +24,13 @@ def generate_bug_report(log_file: str) -> str:
 
 if __name__ == "__main__":
 
-    log_file = "agent_logs/agent_run_PinInterest.log"
+    log_file = "agent_logs/agent_run_Academic website.log"
     bug_report = generate_bug_report(log_file)
     
     # Save the bug report to a file
     output_dir = "bug_reports"
     os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, "bug_report_PinInterest.md")
+    output_file = os.path.join(output_dir, "bug_report_academic_website.md")
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(bug_report)
     

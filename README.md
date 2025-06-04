@@ -8,7 +8,6 @@ This repository is a fork of [browser-use](https://github.com/gregpr07/browser-u
 - Automated bug report generation
 - Screenshot capture of agent actions
 - Task execution from a task list file
-- Support for multiple LLM providers (Anthropic, OpenAI, etc.)
 
 ## Installation
 
@@ -55,29 +54,29 @@ python setup_test_env.py
 This script will:
 - Prompt you to input the login credentials that gets programmatically processed once, and then save the cookies for future launches
 
-2. Run the main script:
+3. Run the main script:
 ```bash
 python main.py
 ```
 
 The script will:
-- Either programmatically login to (currently set) google when there is no cookie available, or read from past browser cookies and launch a browser that is already logged in.
+- Either programmatically login to google when there is no cookies available, or read from past browser cookies and launch a browser that is already logged in.
 - Read tasks from `tasks.txt`
 - Execute each task using an AI agent
-- Generate detailed logs in the `agent_logs` directory
+- Generate logs in the `agent_logs` directory
 - Capture screenshots in the `agent_screenshots` directory
-- Note that currently the script is written such that the white listed domains are limited to a few big websites. Should change this later.
 
 
-3. Run the bug report generation pipeline:
+4. Run the bug report generation pipeline:
 ```bash
 python generate_bug_report.py
 ```
-This generates bug reports in the `bug_reports` directory
+This generates bug reports in the `bug_reports` directory, change the specific task to generate report on
 
 ## Project Structure
 
 - `main.py` - Main entry point for running tasks
+- `setup_test_env.py` - Script for setting up login credentials
 - `generate_bug_report.py` - Script for generating bug reports
 - `analyze_agent_run.py` - Script for analyzing agent runs
 - `agent_logs/` - Directory containing detailed agent logs
