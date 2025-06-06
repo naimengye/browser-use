@@ -24,7 +24,7 @@ dist/
 *.log
 *.png
 *.jpg
-*.md
+#*.md
 *.key
 
 # Secrets and sensitive files
