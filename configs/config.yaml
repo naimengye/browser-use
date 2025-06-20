@@ -1,6 +1,6 @@
 # Browser configuration
 browser:
-  headless: false
+  headless: true
   use_test_profile: true
   test_profile_name: "test_profile"
   extra_browser_args:
@@ -48,10 +48,11 @@ llm:
 
 # Task configuration
 tasks_file: "tasks_test.txt"
+batch_size: 5
 
 # Agent configuration
 agent:
-  max_steps: 5        # Maximum number of steps the agent will take per task
+  max_steps: 50        # Maximum number of steps the agent will take per task
   max_failures: 3         # Maximum consecutive failures before stopping
   retry_delay: 10         # Delay in seconds between retries after failures
   use_vision: true        # Enable screenshot analysis

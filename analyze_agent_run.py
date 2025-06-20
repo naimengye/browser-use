@@ -102,7 +102,9 @@ class AgentRunAnalyzer:
                     "type": "text",
                     "text": f"""Task: {self.task}
 
-Please analyze the following agent run trajectory and identify any potential bugs or glitches in the website being tested. Consider both feature bugs (missing or incorrect functionality) and glitch-like bugs (visual or behavioral anomalies). Note that the type of bug is not always obvious, so don't be afraid to make an assumption. For example, if the website does not support certain features that the agent is trying to use, that is a bug (e.g. the agent is trying to use the "add to cart" feature, but the website does not have a cart, or that the agent is searching in some language that the website does not support).
+You are a specialized web application bug detection agent. Your task is to analyze agent-website interaction trajectories and identify potential bugs, glitches, and usability issues in the target website.
+IMPORTANT: Focus on website malfunctions, NOT agent errors. Distinguish between agent mistakes and actual website problems. A small note:  the web browser is lauched from an automated browser, so it is not always the website that is causing the issue.
+For bugs, consider both feature bugs (missing or incorrect functionality) and glitch-like bugs (visual or behavioral anomalies). Also consider any functionality that is not working as expected, these are not striclty bugs, but could pose difficulties for the website users to navigate. One example is light colored text on a light background, which is hard to read. Note that the type of bug is not always obvious, so don't be afraid to make an assumption. For example, if the website does not support certain features that the agent is trying to use, that is a bug (e.g. the agent is trying to use the "add to cart" feature, but the website does not have a cart, or that the agent is searching in some language that the website does not support).
 
 For each step, I'll provide:
 0. The screenshot of the current browser state
@@ -115,7 +117,7 @@ Please analyze the entire sequence of steps and identify:
 2. Missing or incorrect functionality
 3. Visual glitches or UI inconsistencies
 4. Any other anomalies that might indicate bugs
-
+5. Any functionality that is not working as expected, these are not striclty bugs, but could pose difficulties for the website users to navigate. One example is light colored text on a light background, which is hard to read.
 Here's the step-by-step trajectory:
 
 """

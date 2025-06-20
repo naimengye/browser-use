@@ -24,14 +24,24 @@ def generate_bug_report(log_file: str) -> str:
 
 if __name__ == "__main__":
 
-    log_file = "agent_logs/agent_run_Academic website.log"
-    bug_report = generate_bug_report(log_file)
+    # Get all log files for Startup Website Testing tasks
+    log_dir = "agent_logs"
+    startup_logs = [f for f in os.listdir(log_dir) if f.startswith("agent_run_Ecommerce Testing")]
     
-    # Save the bug report to a file
-    output_dir = "bug_reports"
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, "bug_report_academic_website.md")
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(bug_report)
-    
-    print(f"Bug report has been generated and saved to {output_file}") 
+    # Generate bug reports for each log file
+    for log_file in startup_logs:
+        log_path = os.path.join(log_dir, log_file)
+        bug_report = generate_bug_report(log_path)
+        
+        # Create output filename based on log filename
+        output_filename = log_file.replace("agent_run_", "bug_report_").replace(".log", ".md")
+        
+        # Save the bug report to a file
+        output_dir = "bug_reports"
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = os.path.join(output_dir, output_filename)
+        
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write(bug_report)
+        
+        print(f"Bug report has been generated and saved to {output_file}")

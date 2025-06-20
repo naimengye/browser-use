@@ -176,15 +176,16 @@ class Agent(Generic[Context]):
 		self.sensitive_data = sensitive_data
 		self.logger = logging.getLogger(__name__ + f"_{self.task_name}")
 		"""Save the logger output to a file"""
-		# Create logs directory if it doesn't exist, and if it does, delete it and create a new one
+		# Create logs directory if it doesn't exist
 		log_dir = Path('agent_logs')
-		if log_dir.exists():
-			for file in log_dir.iterdir():
-				file.unlink()
-		else:
-			log_dir.mkdir(exist_ok=True)
+		log_dir.mkdir(exist_ok=True)
 		
+		# Set up log file path for this task
 		log_file = log_dir / f"agent_run_{self.task_name}.log"
+		
+		# If a log file for this specific task already exists, delete it
+		if log_file.exists():
+			log_file.unlink()
 		
 		# Get the current logger handler
 		handler = logging.FileHandler(log_file, mode='w')  # Use 'w' mode to overwrite existing file
