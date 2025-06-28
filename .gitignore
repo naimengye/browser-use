@@ -18,7 +18,6 @@ dist/
 # Data files
 *.gif
 *.pdf
-*.csv
 *.json
 *.jsonl
 *.log
