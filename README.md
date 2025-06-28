@@ -16,11 +16,7 @@ This repository is a fork of [browser-use](https://github.com/gregpr07/browser-u
 
 ## Installation
 
-1. Clone this repository:
-```bash
-git clone https://github.com/naimengye/browser-use.git
-cd browser-use
-```
+1. Clone this repository
 
 2. Install dependencies:
 ```bash
@@ -100,7 +96,7 @@ tasks_file: "tasks_test.txt"
 
 Create a task file (e.g., `tasks_test.txt`) with your tasks:
 ```
-Academic website: Go to the website "https://naimengye.github.io/", explore and analyze the content
+Academic website: Go to the website "XXX", explore and analyze the content
 Google search: Search for "browser automation tools" and extract the top 5 results
 Form filling: Fill out the contact form on example.com with test data
 ```

@@ -844,7 +844,7 @@ ANTHROPIC_API_KEY=your_anthropic_api_key_here
 #### 3. Task Definition
 ```
 # tasks.txt
-Academic website: Go to the website "https://naimengye.github.io/", explore and analyze the content
+Academic website: Go to the website "XXX", explore and analyze the content
 Google search: Search for "browser automation tools" and extract the top 5 results
 Form filling: Fill out the contact form on example.com with test data
 ```
